@@ -1,0 +1,5 @@
+{
+  "name": "AI 监管员生成器",
+  "description": "一个用于配置和生成基于 Python 的 AI 监管脚本的工具，该脚本可监控文件变更、运行测试并通过 Markdown 向其他 AI 代理报告 Bug。",
+  "requestFramePermissions": []
+}
