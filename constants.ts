@@ -4,6 +4,19 @@ openai==1.55.0
 pytest==8.0.0
 `;
 
+export const README_MD = `# 全自动 BUG 调试
+
+让 AI 死磕 AI，具体的空了再写，兄弟们先试试。
+
+## 使用方法
+
+1. 下载 supervisor.py 和 requirements.txt。
+2. 安装依赖: pip install -r requirements.txt
+3. 设置 Key: export DEEPSEEK_API_KEY=sk-...
+4. 运行: python supervisor.py
+5. 如果测试失败，DeepSeek 会分析日志并写入 AI_TODO.md。
+`;
+
 export const TRAE_PROMPT_TEMPLATE = `你是一名 AI 开发人员，正在与自动化监管员协同工作。
 
 你的目标：

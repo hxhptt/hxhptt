@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Download, Terminal, Settings, FileCode, Play, Cpu, Code2 } from 'lucide-react';
-import { PYTHON_SCRIPT_TEMPLATE, REQUIREMENTS_TXT, TRAE_PROMPT_TEMPLATE } from './constants';
+import { Download, Terminal, Settings, FileCode, Play, Cpu, Code2, FileText } from 'lucide-react';
+import { PYTHON_SCRIPT_TEMPLATE, REQUIREMENTS_TXT, TRAE_PROMPT_TEMPLATE, README_MD } from './constants';
 import CodeViewer from './components/CodeViewer';
 import GeminiPreview from './components/GeminiPreview';
 
@@ -10,7 +10,7 @@ function App() {
   const [debounce, setDebounce] = useState(3);
   const [useAI, setUseAI] = useState(true);
   const [apiKey, setApiKey] = useState(''); 
-  const [activeTab, setActiveTab] = useState<'script' | 'requirements' | 'prompt'>('script');
+  const [activeTab, setActiveTab] = useState<'script' | 'requirements' | 'prompt' | 'readme'>('script');
 
   const generatedScript = PYTHON_SCRIPT_TEMPLATE(folder, command, useAI, debounce);
 
@@ -136,15 +136,21 @@ function App() {
           <div className="bg-slate-900 rounded-xl p-6 border border-slate-800 shadow-lg">
              <div className="flex items-center space-x-2 mb-4">
                 <Play className="text-green-400" size={20} />
-                <h2 className="text-lg font-semibold text-white">工作原理</h2>
+                <h2 className="text-lg font-semibold text-white">全自动 BUG 调试</h2>
              </div>
-             <ol className="list-decimal list-inside space-y-3 text-sm text-slate-300">
-                <li>下载 <code>supervisor.py</code> 和 <code>requirements.txt</code>。</li>
-                <li>安装依赖: <code className="bg-slate-800 px-1 py-0.5 rounded text-xs">pip install -r requirements.txt</code></li>
-                <li>设置 Key: <code className="bg-slate-800 px-1 py-0.5 rounded text-xs">export DEEPSEEK_API_KEY=sk-...</code></li>
-                <li>运行: <code className="bg-slate-800 px-1 py-0.5 rounded text-xs">python supervisor.py</code></li>
-                <li>如果测试失败，DeepSeek 会分析日志并写入 <code>AI_TODO.md</code>。</li>
-             </ol>
+             <p className="text-sm text-slate-400 mb-4">
+               让 AI 死磕 AI，具体的空了再写，兄弟们先试试。
+             </p>
+             <div className="space-y-3 text-sm text-slate-300">
+                <p className="font-semibold text-slate-200">使用方法：</p>
+                <ol className="list-decimal list-inside space-y-2">
+                    <li>下载 <code>supervisor.py</code> 和 <code>requirements.txt</code>。</li>
+                    <li>安装依赖: <code className="bg-slate-800 px-1 py-0.5 rounded text-xs">pip install -r requirements.txt</code></li>
+                    <li>设置 Key: <code className="bg-slate-800 px-1 py-0.5 rounded text-xs">export DEEPSEEK_API_KEY=sk-...</code></li>
+                    <li>运行: <code className="bg-slate-800 px-1 py-0.5 rounded text-xs">python supervisor.py</code></li>
+                    <li>如果测试失败，DeepSeek 会分析日志并写入 <code>AI_TODO.md</code>。</li>
+                </ol>
+             </div>
           </div>
 
           {useAI && <GeminiPreview apiKey={apiKey} />}
@@ -155,7 +161,7 @@ function App() {
         <div className="lg:col-span-8 flex flex-col h-full">
             
             {/* Tabs */}
-            <div className="flex space-x-1 mb-4 bg-slate-900/50 p-1 rounded-lg w-fit">
+            <div className="flex space-x-1 mb-4 bg-slate-900/50 p-1 rounded-lg w-fit overflow-x-auto">
                 <button 
                     onClick={() => setActiveTab('script')}
                     className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'script' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
@@ -169,6 +175,13 @@ function App() {
                 >
                     <FileCode size={16} />
                     <span>requirements.txt</span>
+                </button>
+                <button 
+                    onClick={() => setActiveTab('readme')}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'readme' ? 'bg-orange-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                >
+                    <FileText size={16} />
+                    <span>README.md</span>
                 </button>
                 <button 
                     onClick={() => setActiveTab('prompt')}
@@ -193,6 +206,13 @@ function App() {
                         filename="requirements.txt" 
                         code={REQUIREMENTS_TXT} 
                         language="text"
+                    />
+                )}
+                {activeTab === 'readme' && (
+                     <CodeViewer 
+                        filename="README.md" 
+                        code={README_MD} 
+                        language="markdown"
                     />
                 )}
                 {activeTab === 'prompt' && (
